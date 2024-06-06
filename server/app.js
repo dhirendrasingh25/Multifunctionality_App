@@ -2,7 +2,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
+import { corsOptions } from "./constants/config.js";
 //Routes Imports
 import userRoutes from "./routes/userRoutes.js";
 
@@ -11,6 +12,7 @@ import { connectDB } from "./utils/features.js";
 
 // App Configs
 const app = express();
+
 dotenv.config({
   path: "./.env",
 });
@@ -24,7 +26,7 @@ connectDB(mongoURI);
 
 // Using Middlewares Here
 app.use(express.json());
-
+app.use(cors({ corsOptions }));
 app.use(cookieParser());
 
 // Using Routes

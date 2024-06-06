@@ -28,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Password } from '@mui/icons-material';
+import { useLoginMutation ,useSignupMutation} from '../RTK/auth.js';
 // Define the schema for the form using zod
 const formSchema = z.object({
   username: z.string().min(2, "Username should have at least 2 characters").max(50, "Username should not exceed 50 characters").optional(),
@@ -44,8 +44,13 @@ const formSchema = z.object({
   type: z.enum(["Login", "Signup"]),
   password: z.string().min(8, "Password should have at least 8 characters").max(50, "Password should not exceed 50 characters"),
 });
+import { useToast } from "@/components/ui/use-toast"
+import { Loader } from '@/components/Loader.jsx';
 
 const Auth = () => {
+  const { toast } = useToast()
+  const [login, { isLoading: isLoginLoading, isError: isLoginError, isSuccess: isLoginSuccess, error: loginError }] = useLoginMutation();
+  const [signup, { isLoading: isSignupLoading, isError: isSignupError, isSuccess: isSignupSuccess, error: signupError }] = useSignupMutation();
   // Use the useForm hook to manage form state
   const form1 = useForm({
     resolver: zodResolver(formSchema),
@@ -62,7 +67,7 @@ const Auth = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      type: "Signup",
+      type: "Login",
       password:"",
     },
   });
@@ -70,8 +75,31 @@ const Auth = () => {
   // Define the onSubmit function to handle form submission
   const onSubmit = (values) => {
     console.log(values);
-    form1.reset();
-    form2.reset();
+    if(values.type==="Signup") {
+      console.log("here");
+      signup(values)
+      isSignupLoading && <Loader/>
+      isSignupSuccess && toast({
+        title: "Signup Success",
+      })
+      isSignupError && toast({
+        title: "Signup Failed",
+        description: signupError.message,
+      })
+    }else{
+      console.log("there");
+      login(values)
+      isLoginLoading && <Loader/>
+      isLoginSuccess && toast({
+        title: "Login Success",
+      })
+      isLoginError && toast({
+        title: "Login Failed",
+        description: loginError.message,
+      })
+    } 
+    // form1.reset();
+    // form2.reset();
   };
 
   return (
@@ -91,7 +119,7 @@ const Auth = () => {
       <Form {...form1}>
         <form onSubmit={form1.handleSubmit(onSubmit)} className="space-y-8">  
          <TabsContent value="Signup">
-         <input type="hidden" name="type" value="Signup" />
+         {/* <input control={form1.control} type="hidden" name="type" value="Signup" /> */}
             <FormField
               control={form1.control}
               name="username"
@@ -177,8 +205,7 @@ const Auth = () => {
       <Form {...form2}>
         <form onSubmit={form2.handleSubmit(onSubmit)} className="space-y-8"> 
          <TabsContent value="Login">
-         <input type="hidden" name="type" value="Login" />
-            
+         {/* <input control={form2.control} type="hidden" name="type" value="Login" />  // this is not working  */}
             <FormField
               control={form2.control}
               name="email"
