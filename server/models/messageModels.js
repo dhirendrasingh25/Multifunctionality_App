@@ -3,29 +3,16 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema(
   {
-    content: String,
-
-    attachments: [
-      {
-        public_id: {
-          type: String,
-          required: true,
-        },
-        url: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
-
-    sender: {
+    message: { String },
+    reciever: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    chat: {
+
+    sender: {
       type: Schema.Types.ObjectId,
-      ref: "Chat",
+      ref: "User",
       required: true,
     },
   },

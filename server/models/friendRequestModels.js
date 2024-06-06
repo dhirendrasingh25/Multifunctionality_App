@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const chatRequestSchema = new Schema(
+const friendRequestSchema = new Schema(
   {
     status: {
       type: String,
@@ -25,6 +25,6 @@ const chatRequestSchema = new Schema(
   }
 );
 
-const ChatRequest = mongoose.model("ChatRequest", chatRequestSchema);
+const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
 
-export default ChatRequest;
+export default FriendRequest;
