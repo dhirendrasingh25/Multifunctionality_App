@@ -26,7 +26,8 @@ import ChatIcon from '@mui/icons-material/Chat';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import QuizIcon from '@mui/icons-material/Quiz';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import LoginIcon from '@mui/icons-material/Login';
+
+import Auth from '@/Auth/Auth';
 const SideBarOptions=[
     {name:"DashBoard",icon:<DashboardIcon className=' text-slate-400' />,link:"/"},
     {name:"Users",icon:<GroupIcon className=' text-slate-400'/>,link:"/"},
@@ -38,10 +39,9 @@ const SideBarOptions=[
 
 const SideBar = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <>
+    <div className=''>
       <nav className="sticky z-50 top-0  w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
@@ -139,15 +139,15 @@ const SideBar = ({ children }) => {
           </ul>
           <ul className="space-y-2 font-medium">
             <li>
-             <Button variant="outline" className="w-full text-start" ><LoginIcon  /> <span className='px-2'> Authenticate</span> </Button>
             </li>
+            <Auth/>
             </ul>
         </div>
       </aside>
-      <div className='w-full h-full p-4 sm:ml-64'>
+      <div className=' h-full p-4 sm:ml-64'>
         {children}
       </div>
-    </>
+    </div>
   );
 }
 
