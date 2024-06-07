@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import LoginIcon from '@mui/icons-material/Login';
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -32,6 +32,8 @@ import { useToast } from "@/components/ui/use-toast"
 import 'react-toastify/dist/ReactToastify.css';
 import { server } from '@/main';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '@/Redux/Reducers/authSlice';
 const formSchema = z.object({
   username: z.string().min(2, "Username should have at least 2 characters").max(50, "Username should not exceed 50 characters").optional(),
   email: z.string().email("Invalid email address"),
@@ -72,26 +74,35 @@ const Auth = () => {
 
   const [open, setOpen] = React.useState(false);
   const { toast } = useToast()
+  const dispatch = useDispatch();
+  // const config = {
+  //   withCredentials: true,
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // };
 
   const onSubmit = async(values) => {
     if (values.type === "Signup") {
       
      try {
-      await axios.post(`${server}/user/new`, {
+      await axios.post(`${server}/api/v1/user/new`, {
         name:values.username,
         email:values.email, 
         password:values.password, 
         age:values.age, 
-        location:values.location},{
-        headers: {
-          'Content-Type': 'application/json'  
-        }}
+        location:values.location},
+        {
+          withCredentials: true,
+
+        }
       )
       .then((res) => {
         toast({
           title: "Signup Success",
           variant: "success",
         })
+        dispatch(loginUser(res.data.user))
         form1.reset();
       })
       .catch((err) => {
@@ -108,12 +119,11 @@ const Auth = () => {
      }
     } else {
       try {
-       await axios.post(`${server}/user/login`, 
-        {email:values.email,password:values.password},{
-          headers: {
-            "Content-Type": "application/json",
-          },
-          
+       await axios.post(`${server}/api/v1/user/login`, 
+        {email:values.email,password:values.password},
+        {
+          withCredentials: true,
+    
         }
         )
         .then((res) => {
@@ -121,6 +131,8 @@ const Auth = () => {
             title: "Login Success",
             variant: "success",
           })
+          // console.log(res.data);
+          dispatch(loginUser(res.data.user))
           form2.reset();
         })
         .catch((err) => {
@@ -137,7 +149,7 @@ const Auth = () => {
       }
       
     }
-   
+    setOpen(false);
     
   };
 

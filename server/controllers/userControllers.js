@@ -61,3 +61,13 @@ export const logout = TryCatch(async (req, res) => {
       message: "Logged out successfully",
     });
 });
+
+export const getProfile = TryCatch(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  console.log(user);
+  if (!user) return next(new ErrorHandler("User not found", 404));
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});

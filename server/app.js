@@ -26,12 +26,17 @@ export const envMode = process.env.NODE_ENV;
 connectDB(mongoURI);
 
 // Using Middlewares Here
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(express.json());
-app.use(cors({ corsOptions }));
 app.use(cookieParser());
 
 // Using Routes
-app.use("/user", userRoutes);
+app.use("/api/v1/user", userRoutes);
 app.use(errorMiddleware);
 // Server
 app.listen(PORT, () => {

@@ -4,6 +4,7 @@ import {
   newUser,
   logout,
   googleLogin,
+  getProfile,
 } from "../controllers/userControllers.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 const app = express.Router();
@@ -16,5 +17,6 @@ app.post("/new", newUser);
 
 app.use(isAuthenticated);
 app.get("/logout", logout);
+app.get("/profile/:id", getProfile);
 
 export default app;
