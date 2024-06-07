@@ -6,10 +6,10 @@ import { ErrorHandler } from "../utils/utility.js";
 import { TryCatch } from "../middlewares/error.js";
 
 export const newUser = TryCatch(async (req, res, next) => {
-  const { username, email, password, age, location } = req.body;
+  const { name, email, password, age, location } = req.body;
   // console.log(req.body);
   const user = await User.create({
-    name: username,
+    name,
     email,
     password,
     age,

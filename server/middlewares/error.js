@@ -13,7 +13,7 @@ export const errorMiddleware = (err, req, res, next) => {
 
   if (err.code === 11000) {
     const error = Object.keys(err.keyPattern).join(",");
-    err.message = `Duplicate field - ${error}`;
+    err.message = `${error} already Exists`;
     err.statusCode = 400;
   }
 

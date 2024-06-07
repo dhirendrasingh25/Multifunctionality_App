@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 
 // Utils Imports
 import { connectDB } from "./utils/features.js";
+import { errorMiddleware } from "./middlewares/error.js";
 
 // App Configs
 const app = express();
@@ -31,7 +32,7 @@ app.use(cookieParser());
 
 // Using Routes
 app.use("/user", userRoutes);
-
+app.use(errorMiddleware);
 // Server
 app.listen(PORT, () => {
   console.log(`Server Started at ${PORT}`);
