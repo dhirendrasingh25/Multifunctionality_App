@@ -28,6 +28,7 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 import Auth from '@/Auth/Auth';
+import { useSelector } from 'react-redux';
 const SideBarOptions=[
     {name:"DashBoard",icon:<DashboardIcon className=' text-slate-400' />,link:"/"},
     {name:"Users",icon:<GroupIcon className=' text-slate-400'/>,link:"/"},
@@ -36,10 +37,17 @@ const SideBarOptions=[
     {name:"Google Map",icon:<AddLocationAltIcon className=' text-slate-400'/>,link:"/"},
     {name:"Quiz",icon:<QuizIcon className=' text-slate-400' />,link:"/"}
 ]
-
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '@/Redux/Reducers/authSlice';
 const SideBar = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
 
+  const dispatch = useDispatch();
+  const handleLogout = () => {  
+    dispatch(logoutUser());
+  }
   return (
     <div className=''>
       <nav className="sticky z-50 top-0  w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -79,7 +87,7 @@ const SideBar = ({ children }) => {
               <div className="flex items-center ms-3">
                 <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                <Button variant="outline"><AccountCircleIcon /><p className='px-2'> Profile</p></Button>
+                <Button variant="outline"><AccountCircleIcon /><p className='px-2'> {user?.name || "Profile"}</p></Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 mr-2">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -106,7 +114,7 @@ const SideBar = ({ children }) => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
+                    <button onClick={handleLogout}>Log out</button>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
                 </DropdownMenu>
@@ -140,7 +148,7 @@ const SideBar = ({ children }) => {
           <ul className="space-y-2 font-medium">
             <li>
             </li>
-            <Auth/>
+            {!user && <Auth/>}
             </ul>
         </div>
       </aside>

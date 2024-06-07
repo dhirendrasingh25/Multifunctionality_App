@@ -12,11 +12,10 @@ const app = express.Router();
 app.post("/login", login);
 app.post("/google-login", googleLogin);
 app.post("/new", newUser);
-
+app.get("/profile/:id", getProfile);
 // After here user must be logged in to access the routes
 
 app.use(isAuthenticated);
 app.get("/logout", logout);
-app.get("/profile/:id", getProfile);
 
 export default app;

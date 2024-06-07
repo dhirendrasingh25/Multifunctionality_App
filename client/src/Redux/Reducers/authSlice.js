@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useToast } from "@/components/ui/use-toast";
-
+import axios from "axios";
+import { server } from "@/main";
 // const toast = useToast();
 
 const initialState = {
@@ -42,17 +43,18 @@ const initialState = {
 //   }
 // });
 
-// const adminLogout = createAsyncThunk("admin/logout", async () => {
-//   try {
-//     const { data } = await axios.get(`${server}/api/v1/admin/logout`, {
-//       withCredentials: true,
-//     });
-
-//     return data.message;
-//   } catch (error) {
-//     throw error.response.data.message;
-//   }
-// });
+export const getProfileDetails = createAsyncThunk("profile/:id", async (id) => {
+  try {
+    const { data } = await axios.get(`${server}/api/v1/user/profile/${id}`, {
+      withCredentials: true,
+    });
+    console.log(data);
+    return data.user;
+  } catch (error) {
+    console.log(error);
+    throw error.response.data.message;
+  }
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -69,35 +71,29 @@ const authSlice = createSlice({
       localStorage.removeItem("user");
     },
   },
-  //   extraReducers: (builder) => {
-  //     builder
-  //       .addCase(adminLogin.fulfilled, (state, action) => {
-  //         state.isAdmin = true;
-  //         toast.success(action.payload);
-  //       })
-  //       .addCase(adminLogin.rejected, (state, action) => {
-  //         state.isAdmin = false;
-  //         toast.error(action.error.message);
-  //       })
-  //       .addCase(getAdmin.fulfilled, (state, action) => {
-  //         if (action.payload) {
-  //           state.isAdmin = true;
-  //         } else {
-  //           state.isAdmin = false;
-  //         }
-  //       })
-  //       .addCase(getAdmin.rejected, (state, action) => {
-  //         state.isAdmin = false;
-  //       })
-  //       .addCase(adminLogout.fulfilled, (state, action) => {
-  //         state.isAdmin = false;
-  //         toast.success(action.payload);
-  //       })
-  //       .addCase(adminLogout.rejected, (state, action) => {
-  //         state.isAdmin = true;
-  //         toast.error(action.error.message);
-  //       });
-  //   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProfileDetails.fulfilled, (state, action) => {
+        state.user = action.payload;
+        // toast.success(action.payload);
+      })
+      .addCase(getProfileDetails.rejected, (state, action) => {
+        state.user = null;
+        // toast.error(action.error.message);
+      });
+
+    //       .addCase(getAdmin.rejected, (state, action) => {
+    //         state.isAdmin = false;
+    //       })
+    //       .addCase(adminLogout.fulfilled, (state, action) => {
+    //         state.isAdmin = false;
+    //         toast.success(action.payload);
+    //       })
+    //       .addCase(adminLogout.rejected, (state, action) => {
+    //         state.isAdmin = true;
+    //         toast.error(action.error.message);
+    //       });
+  },
 });
 
 export default authSlice;
