@@ -104,14 +104,15 @@ export const addFriend = TryCatch(async (req, res, next) => {
 
 export const getFriendNames = TryCatch(async (req, res, next) => {
   const { userId } = req.params;
-
-  const user = await User.findById(userId).populate("friends._id", "name");
+  // console.log("userId:", userId);
+  const user = await User.findById(userId).populate("friends", "name");
+  // console.log("user:", user);
   if (!user) {
     return next(new ErrorHandler("User not found", 404));
   }
 
-  const friendNames = user.friends.map((friend) => friend._id.name);
-  console.log(friendNames);
+  const friendNames = user.friends;
+  // console.log("frined :", friendNames);
   res.status(200).json({
     success: true,
     friendNames,

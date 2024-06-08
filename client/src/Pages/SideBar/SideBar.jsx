@@ -32,15 +32,16 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Auth from '@/Auth/Auth';
 import { useSelector } from 'react-redux';
 const SideBarOptions=[
-    {name:"DashBoard",icon:<DashboardIcon className=' text-slate-400' />,link:"/"},
-    {name:"Users",icon:<GroupIcon className=' text-slate-400'/>,link:"/users"},
-    {name:"Chat",icon:< ChatIcon className=' text-slate-400'/>},
-    {name:"GroupChat",icon:<QuestionAnswerIcon className=' text-slate-400'/>,link:"/group-chat"},
-    {name:"Google Map",icon:<AddLocationAltIcon className=' text-slate-400'/>,link:"/maps"},
-    {name:"Quiz",icon:<QuizIcon className=' text-slate-400' />,link:"/quiz"}
+    {name:"DashBoard",icon:<DashboardIcon  />,link:"/"},
+    {name:"Users",icon:<GroupIcon />,link:"/users"},
+    {name:"Chat",icon:< ChatIcon />},
+    {name:"GroupChat",icon:<QuestionAnswerIcon />,link:"/group-chat"},
+    {name:"Google Map",icon:<AddLocationAltIcon />,link:"/maps"},
+    {name:"Quiz",icon:<QuizIcon  />,link:"/quiz"}
 ]
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '@/Redux/Reducers/authSlice';
+import { useGetFriendsListQuery } from '@/RTK/api';
 
 
 
@@ -51,7 +52,10 @@ const SideBar = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isChatAccordionOpen, setChatAccordionOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  // console.log(user);
+  // console.log(user?.friends);
+
+  const {data:friendsData} = useGetFriendsListQuery(user?._id);
+  // console.log(friendsData?.friendNames);
 
   const dispatch = useDispatch();
   const handleLogout = () => {  
@@ -149,7 +153,7 @@ const SideBar = ({ children }) => {
                 {option.name === "Chat" ? (
                   <div>
                     <div
-                      className={`flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group `}
+                      className={`flex items-center p-2 text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group `}
                       onClick={handleAccordionToggle}
                     >
                       {option.icon}
@@ -162,12 +166,16 @@ const SideBar = ({ children }) => {
                     {isChatAccordionOpen && (
                       <ul className="space-y-2 font-medium mt-2 ml-4">
                         <li>
-                          <Link to="/chat">
-                            <div className={`flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${location.pathname === option.link ? 'bg-gray-100 dark:bg-gray-700' : ''}`}>
-                              <ChatIcon className='text-slate-400' />
-                              <span className="ms-3">Private Chat</span>
-                            </div>
-                          </Link>
+                          {
+                            friendsData?.friendNames?.map((friend, index) => (
+                              <Link to={`/chat/${friend._id}`} key={index}>
+                                <div className={`flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group `}>
+                                  <ChatIcon  />
+                                  <span className="ms-3">{friend.name}</span>
+                                </div>
+                              </Link>
+                            ))  
+                          }
                         </li>
                       </ul>
                     )}
@@ -175,7 +183,7 @@ const SideBar = ({ children }) => {
                 ) : (
                   <Link to={option.link}>
                     <div
-                      className={`flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${location.pathname === option.link ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
+                      className={`flex items-center p-2 text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${location.pathname === option.link ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
                     >
                       {option.icon}
                       <span className="ms-3">{option.name}</span>

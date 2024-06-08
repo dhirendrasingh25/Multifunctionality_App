@@ -46,7 +46,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SideBar> <Home/> </SideBar>} />
           <Route path="/users" element={<SideBar> <Users/> </SideBar>} />
-          <Route path="/chat" element={<SideBar> <Chat /> </SideBar>} />
+          <Route path="/chat/:id" element={<SideBar> <Chat /> </SideBar>} />
           <Route path="/group-chat" element={<SideBar> <GroupChat /> </SideBar>} />
           <Route path="/maps" element={<SideBar> <Maps/></SideBar>} />
           <Route path="/quiz" element={<SideBar> <Quiz/></SideBar>} />

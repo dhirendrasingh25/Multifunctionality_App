@@ -22,6 +22,6 @@ app.get("/profile/:id", getProfile);
 app.get("/logout", logout);
 app.get("/all-users", getAllUsers);
 app.post("/add-friend", addFriend);
-app.get("/get-friends/:id", getFriendNames);
+app.get("/get-friends/:userId", getFriendNames);
 
 export default app;
