@@ -4,7 +4,9 @@ import { TryCatch } from "./error.js";
 import { SECURITY_TOKEN } from "../constants/config.js";
 
 export const isAuthenticated = TryCatch((req, res, next) => {
-  const token = req.cookies[SECURITY_TOKEN];
+  const token = req.cookies["security-token"];
+  console.log("cookies:", req.cookies);
+  console.log("token", token);
   if (!token)
     return next(new ErrorHandler("Please login to access this route", 401));
 

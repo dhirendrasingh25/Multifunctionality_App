@@ -48,7 +48,7 @@ export const getProfileDetails = createAsyncThunk("profile/:id", async (id) => {
     const { data } = await axios.get(`${server}/api/v1/user/profile/${id}`, {
       withCredentials: true,
     });
-    console.log(data);
+    // console.log(data);
     return data.user;
   } catch (error) {
     console.log(error);

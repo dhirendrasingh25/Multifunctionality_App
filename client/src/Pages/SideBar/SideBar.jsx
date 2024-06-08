@@ -26,28 +26,40 @@ import ChatIcon from '@mui/icons-material/Chat';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import QuizIcon from '@mui/icons-material/Quiz';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import Auth from '@/Auth/Auth';
 import { useSelector } from 'react-redux';
 const SideBarOptions=[
     {name:"DashBoard",icon:<DashboardIcon className=' text-slate-400' />,link:"/"},
-    {name:"Users",icon:<GroupIcon className=' text-slate-400'/>,link:"/"},
-    {name:"Chat",icon:< ChatIcon className=' text-slate-400'/>,link:"/"},
-    {name:"GroupChat",icon:<QuestionAnswerIcon className=' text-slate-400'/>,link:"/"},
-    {name:"Google Map",icon:<AddLocationAltIcon className=' text-slate-400'/>,link:"/"},
-    {name:"Quiz",icon:<QuizIcon className=' text-slate-400' />,link:"/"}
+    {name:"Users",icon:<GroupIcon className=' text-slate-400'/>,link:"/users"},
+    {name:"Chat",icon:< ChatIcon className=' text-slate-400'/>},
+    {name:"GroupChat",icon:<QuestionAnswerIcon className=' text-slate-400'/>,link:"/group-chat"},
+    {name:"Google Map",icon:<AddLocationAltIcon className=' text-slate-400'/>,link:"/maps"},
+    {name:"Quiz",icon:<QuizIcon className=' text-slate-400' />,link:"/quiz"}
 ]
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '@/Redux/Reducers/authSlice';
+
+
+
+
+
+
 const SideBar = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isChatAccordionOpen, setChatAccordionOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
+  // console.log(user);
 
   const dispatch = useDispatch();
   const handleLogout = () => {  
     dispatch(logoutUser());
   }
+  const handleAccordionToggle = () => {
+    setChatAccordionOpen(!isChatAccordionOpen);
+  };
   return (
     <div className=''>
       <nav className="sticky z-50 top-0  w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -132,18 +144,46 @@ const SideBar = ({ children }) => {
       >
         <div className="h-full px-3 pb-4 overflow-y-auto flex flex-col justify-between bg-white dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
-            {
-                SideBarOptions.map((option,index)=>(
-                    <li key={index}>
-                        <Link to={option.link}>
-                        <div className="flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            {option.icon}
-                            <span className="ms-3 ">{option.name}</span>
-                        </div>
-                        </Link>
-                    </li>   
-                ))
-            }
+          {SideBarOptions.map((option, index) => (
+              <li key={index}>
+                {option.name === "Chat" ? (
+                  <div>
+                    <div
+                      className={`flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group `}
+                      onClick={handleAccordionToggle}
+                    >
+                      {option.icon}
+                      <div className='flex justify-between w-full'>
+                      <span className="ms-3">{option.name}</span>
+                      <span>{!isChatAccordionOpen ? <KeyboardArrowRightIcon />: <KeyboardArrowDownIcon/>}   </span>
+                      </div>
+                      
+                    </div>
+                    {isChatAccordionOpen && (
+                      <ul className="space-y-2 font-medium mt-2 ml-4">
+                        <li>
+                          <Link to="/chat">
+                            <div className={`flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${location.pathname === option.link ? 'bg-gray-100 dark:bg-gray-700' : ''}`}>
+                              <ChatIcon className='text-slate-400' />
+                              <span className="ms-3">Private Chat</span>
+                            </div>
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <Link to={option.link}>
+                    <div
+                      className={`flex items-center p-2 text-gray-600 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${location.pathname === option.link ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
+                    >
+                      {option.icon}
+                      <span className="ms-3">{option.name}</span>
+                    </div>
+                  </Link>
+                )}
+              </li>
+            ))}
           </ul>
           <ul className="space-y-2 font-medium">
             <li>

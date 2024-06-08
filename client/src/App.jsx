@@ -7,45 +7,49 @@ import { Loader } from './components/Loader';
 import SideBar from './Pages/SideBar/SideBar';
 import PageNotFound from "./404/PageNotFound";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetProfileQuery, useLoginMutation } from "./RTK/api";
+import { useGetallUsersQuery, useGetProfileQuery, useLoginMutation } from "./RTK/api";
 import { getProfileDetails, loginUser, logoutUser } from "./Redux/Reducers/authSlice";
-import axios from "axios";
-import { server } from "./main"
+// import Maps from "./Pages/Maps/Maps";
+// import Quiz from "./Pages/Quiz/Quiz";
+// import GroupChat from "./Pages/Chat/GroupChat";
+
 const Home= lazy(()=> import("./Pages/Home/Home"));
+const Users= lazy(()=> import("./Pages/Users/Users"));
+const Chat = lazy(()=> import("./Pages/Chat/Chat"));
+const GroupChat = lazy(()=> import("./Pages/Chat/GroupChat"));
+const Quiz = lazy(()=> import("./Pages/Quiz/Quiz"));
+const Maps = lazy(()=> import("./Pages/Maps/Maps"));
 
 
 
 function App() {
-  // const { user, loading } = useSelector((state) => state.auth);
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const userId = storedUser?._id;
-  // const [loginUserMutation] = useLoginMutation();
   const dispatch = useDispatch();
   useEffect(() => {
     // console.log("efe");
     // console.log(userId);
     if (userId) {
       dispatch(getProfileDetails(userId));
+      dispatch(loginUser(storedUser));
     }
   }, [dispatch, userId]);
 
- 
-  // console.log(user);
-  // useEffect(() => {
-  //   axios
-  //     .get(`${server}/api/v1/user/profile/${ userId}`, 
-  //       { headers:"Content-Type: application/json",
-  //         withCredentials: true }
-  //     )
-  //     .then(({ data }) => loginUserMutation(data))
-  //     .catch((err) => console.log(err));
-  // }, [userId]);
+  // const {data} = useGetallUsersQuery()
+  // console.log(data);
+
+
   return (
     <>
       <Router>
       <Suspense fallback={<Loader/>}> 
         <Routes>
           <Route path="/" element={<SideBar> <Home/> </SideBar>} />
+          <Route path="/users" element={<SideBar> <Users/> </SideBar>} />
+          <Route path="/chat" element={<SideBar> <Chat /> </SideBar>} />
+          <Route path="/group-chat" element={<SideBar> <GroupChat /> </SideBar>} />
+          <Route path="/maps" element={<SideBar> <Maps/></SideBar>} />
+          <Route path="/quiz" element={<SideBar> <Quiz/></SideBar>} />
           <Route path="*" element={<PageNotFound/>} />
         </Routes>
       </Suspense>

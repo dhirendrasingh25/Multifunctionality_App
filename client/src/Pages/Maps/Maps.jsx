@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Quiz = () => {
+const Maps = () => {
   return (
     <div>
-      Quiz
+      MAps
     </div>
   )
 }
 
-export default Quiz
+export default Maps

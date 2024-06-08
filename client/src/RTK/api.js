@@ -4,7 +4,7 @@ const server = import.meta.env.VITE_SERVER_URL;
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: server, credentials: "include" }),
-  tagTypes: ["USER"],
+  tagTypes: ["USERS"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
@@ -27,7 +27,36 @@ export const api = createApi({
         withCredentials: true,
       }),
     }),
+    getallUsers: builder.query({
+      query: () => ({
+        url: "/api/v1/user/all-users",
+        method: "GET",
+      }),
+      providesTags: ["USERS"],
+    }),
+    addFriend: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/user/add-friend",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["USERS"],
+    }),
+    getFriendsList: builder.query({
+      query: (id) => ({
+        url: `/api/v1/user/get-friends/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["USERS"],
+    }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation, useGetProfileQuery } = api;
+export const {
+  useLoginMutation,
+  useSignupMutation,
+  useGetProfileQuery,
+  useGetallUsersQuery,
+  useAddFriendMutation,
+  useGetFriendsListQuery,
+} = api;

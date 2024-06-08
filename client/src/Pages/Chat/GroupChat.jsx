@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Quiz = () => {
+const GroupChat = () => {
   return (
     <div>
-      Quiz
+      GC
     </div>
   )
 }
 
-export default Quiz
+export default GroupChat

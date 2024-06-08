@@ -64,7 +64,56 @@ export const logout = TryCatch(async (req, res) => {
 
 export const getProfile = TryCatch(async (req, res, next) => {
   const user = await User.findById(req.params.id);
-  console.log(user);
+  // console.log(user);
   if (!user) return next(new ErrorHandler("User not found", 404));
   sendToken(res, user, 200, `Welcome , ${user.name}`);
+});
+
+export const getAllUsers = TryCatch(async (req, res, next) => {
+  const users = await User.find();
+  // console.log(users);
+  if (!users) return next(new ErrorHandler("No Users Found", 404));
+  res.status(200).json({
+    success: true,
+    users,
+  });
+});
+
+export const addFriend = TryCatch(async (req, res, next) => {
+  const { userId, friendId } = req.body;
+
+  const user = await User.findById(userId);
+  const friend = await User.findById(friendId);
+
+  if (!user || !friend) return next(new ErrorHandler("User not found", 404));
+
+  if (user.friends.includes(friendId) || friend.friends.includes(userId))
+    return next(new ErrorHandler("Already Friends", 400));
+
+  user.friends.push(friendId);
+  friend.friends.push(user);
+
+  await user.save();
+  await friend.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Friend added successfully",
+  });
+});
+
+export const getFriendNames = TryCatch(async (req, res, next) => {
+  const { userId } = req.params;
+
+  const user = await User.findById(userId).populate("friends._id", "name");
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  const friendNames = user.friends.map((friend) => friend._id.name);
+  console.log(friendNames);
+  res.status(200).json({
+    success: true,
+    friendNames,
+  });
 });
