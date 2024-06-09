@@ -2,7 +2,6 @@ import User from "../models/userModels.js";
 import { sendToken, cookieOptions } from "../utils/features.js";
 import { compare } from "bcrypt";
 import { ErrorHandler } from "../utils/utility.js";
-
 import { TryCatch } from "../middlewares/error.js";
 
 export const newUser = TryCatch(async (req, res, next) => {
@@ -63,6 +62,7 @@ export const logout = TryCatch(async (req, res) => {
 });
 
 export const getProfile = TryCatch(async (req, res, next) => {
+  // console.log(req.params.id);
   const user = await User.findById(req.params.id);
   // console.log(user);
   if (!user) return next(new ErrorHandler("User not found", 404));

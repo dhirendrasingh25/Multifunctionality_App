@@ -4,7 +4,7 @@ const server = import.meta.env.VITE_SERVER_URL;
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: server, credentials: "include" }),
-  tagTypes: ["USERS"],
+  tagTypes: ["USERS", "MESSAGES"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
@@ -49,6 +49,31 @@ export const api = createApi({
       }),
       providesTags: ["USERS"],
     }),
+    sendMessage: builder.mutation({
+      query(idata) {
+        const { id, data } = idata;
+        // console.log(idata);
+        // console.log(data, "data here");
+        // console.log(id.id, "id here");
+        return {
+          url: `/api/v1/chat/send/${id.id}`,
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["MESSAGES"],
+    }),
+    getMessage: builder.query({
+      query(data) {
+        // console.log(data);
+        const { rid, sid } = data;
+        return {
+          url: `/api/v1/chat/${rid}/${sid}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["MESSAGES"],
+    }),
   }),
 });
 
@@ -59,4 +84,6 @@ export const {
   useGetallUsersQuery,
   useAddFriendMutation,
   useGetFriendsListQuery,
+  useSendMessageMutation,
+  useGetMessageQuery,
 } = api;

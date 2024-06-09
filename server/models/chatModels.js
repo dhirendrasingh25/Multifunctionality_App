@@ -5,7 +5,7 @@ const chatSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      // required: true,
     },
     groupChat: {
       type: Boolean,

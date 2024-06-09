@@ -3,7 +3,10 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema(
   {
-    message: { String },
+    message: {
+      type: String,
+      required: true,
+    },
     reciever: {
       type: Schema.Types.ObjectId,
       ref: "User",
