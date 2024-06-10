@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 const QuizPage = () => {
   const {user} = useSelector((state)=>state.auth)
-  console.log(user._id);
+  // console.log(user._id);
   const [quizResult, setQuizResult] = useState(null);
   const [showQuiz, setShowQuiz] = useState(true);
   const [addQuizResult] = useAddQuizResultMutation()
@@ -42,6 +42,7 @@ const QuizPage = () => {
         <>
           {quizResult && (
             <div>
+              <h1><strong>Quiz Submitted Successfully</strong></h1>
               <h2><strong>Quiz Summary</strong></h2>
               <p><strong>Total Questions:</strong> {quizResult?.total}</p>
               <p><strong>Correct Answers:</strong> {quizResult?.correct}</p>
@@ -49,7 +50,7 @@ const QuizPage = () => {
               <p><strong>Percentage:</strong> {quizResult?.percentage}%</p>
               <p><strong>Total Points:</strong> {quizResult?.totalPoints}</p>
               <p><strong>Points from Correct Answers:</strong> {quizResult?.correctPoints}</p>
-              <Button onClick={handleResetQuiz}>Reset Quiz</Button>
+              <Button onClick={handleResetQuiz}>DONE</Button>
             </div>
           )}
         </>

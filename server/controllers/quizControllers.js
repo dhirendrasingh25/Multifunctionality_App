@@ -44,7 +44,7 @@ export const getQuizDetailsByUserId = TryCatch(async (req, res) => {
 
 export const getAllQuizResults = TryCatch(async (req, res, next) => {
   const quizzes = await Quiz.find();
-  if (!users) return next(new ErrorHandler("No Users Found", 404));
+  if (!quizzes) return next(new ErrorHandler("No Quizzes Found", 404));
   res.status(200).json(quizzes);
 });
 
