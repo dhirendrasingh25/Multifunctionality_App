@@ -6,6 +6,8 @@ import { store } from '../src/Redux/store.js'
 import { Provider } from 'react-redux'
 import { Toaster } from "@/components/ui/toaster"
 
+
+
 export const server = import.meta.env.VITE_SERVER_URL
 // console.log(server);
 
