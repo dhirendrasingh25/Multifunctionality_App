@@ -17,7 +17,7 @@ const Home= lazy(()=> import("./Pages/Home/Home"));
 const Users= lazy(()=> import("./Pages/Users/Users"));
 const Chat = lazy(()=> import("./Pages/Chat/Chat"));
 const GroupChat = lazy(()=> import("./Pages/Chat/GroupChat"));
-const Quiz = lazy(()=> import("./Pages/Quiz/Quiz"));
+const Quiz = lazy(()=> import("./Pages/Quiz/QuizPage"));
 const Maps = lazy(()=> import("./Pages/Maps/Maps"));
 
 
