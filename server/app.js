@@ -3,16 +3,12 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { corsOptions } from "./constants/config.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { getOtherMember, getSockets } from "./utils/features.js";
-import Message from "./models/messageModels.js";
-import { v4 as uuid } from "uuid";
 //Routes Imports
 import userRoutes from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
-
+import quizRoutes from "./routes/quizRoutes.js";
 // Utils Imports
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
@@ -54,6 +50,7 @@ app.use(cookieParser());
 // Using Routes
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/chat", chatRoutes);
+app.use("/api/v1/quiz", quizRoutes);
 app.use(errorMiddleware);
 
 export const getReceiverSocketId = (receiverId) => {
