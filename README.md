@@ -1,1 +1,1 @@
-# ChatApp
+# Multi Functionality App
