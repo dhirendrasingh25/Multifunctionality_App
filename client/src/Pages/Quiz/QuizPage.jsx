@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import Quiz from 'react-quiz-component';
 import { quiz } from './quizData';
 import { Button } from '@/components/ui/button';
+import { useAddQuizResultMutation } from '@/RTK/api';
+import { useSelector } from 'react-redux';
 
 const QuizPage = () => {
+  const {user} = useSelector((state)=>state.auth)
+  console.log(user._id);
   const [quizResult, setQuizResult] = useState(null);
   const [showQuiz, setShowQuiz] = useState(true);
+  const [addQuizResult] = useAddQuizResultMutation()
 
   const handleQuizComplete = (result) => {
     console.log('Quiz result:', result);
@@ -16,7 +21,9 @@ const QuizPage = () => {
       percentage: (result.numberOfCorrectAnswers / result.numberOfQuestions) * 100,
       totalPoints: result.totalPoints,
       correctPoints: result.correctPoints,
+      quizName:"FirstQuiz"
     };
+    addQuizResult({id:user?._id,data:quizSummary})
     console.log('Quiz summary:', quizSummary);
     setQuizResult(quizSummary);
     setShowQuiz(false); // Hide quiz when done

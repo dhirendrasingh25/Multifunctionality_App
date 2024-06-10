@@ -74,6 +74,36 @@ export const api = createApi({
       },
       providesTags: ["MESSAGES"],
     }),
+    addQuizResult: builder.mutation({
+      query({ id, ...data }) {
+        console.log(id);
+        console.log(data);
+        // const { rid, sid } = data;
+        return {
+          url: `/api/v1/quiz/add/${id}`,
+          method: "POST",
+          body: data.data,
+        };
+      },
+    }),
+    getQuizResultsOfUser: builder.query({
+      query: (id) => ({
+        url: `/api/v1/quiz/quiz-result-by-user/${id}`,
+        method: "GET",
+      }),
+    }),
+    getAllQuizResults: builder.query({
+      query: () => ({
+        url: `/api/v1/quiz/quiz-all-results`,
+        method: "GET",
+      }),
+    }),
+    getQuizResultsbyName: builder.query({
+      query: (name) => ({
+        url: `/api/v1/quiz/quiz-name-results/${name}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -86,4 +116,8 @@ export const {
   useGetFriendsListQuery,
   useSendMessageMutation,
   useGetMessageQuery,
+  useAddQuizResultMutation,
+  useGetAllQuizResultsQuery,
+  useGetQuizResultsOfUserQuery,
+  useGetQuizResultsbyNameQuery,
 } = api;

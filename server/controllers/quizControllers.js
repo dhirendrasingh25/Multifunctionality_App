@@ -12,8 +12,7 @@ export const addQuizResult = TryCatch(async (req, res) => {
     correctPoints,
     quizName,
   } = req.body;
-  console.log(req.user, "user");
-  const userId = req.user._id;
+  const userId = req.params.id;
 
   const quiz = await Quiz.create({
     quizResult: {
@@ -27,7 +26,7 @@ export const addQuizResult = TryCatch(async (req, res) => {
     quizName,
     userId,
   });
-
+  // console.log("Success");
   res.status(201).json(quiz);
 });
 
