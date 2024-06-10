@@ -26,7 +26,8 @@ export const addQuizResult = TryCatch(async (req, res) => {
     quizName,
     userId,
   });
-  // console.log("Success");
+  if (!quiz) return next(new ErrorHandler("Quiz Result not saved", 500));
+  // console.log(quiz);
   res.status(201).json(quiz);
 });
 

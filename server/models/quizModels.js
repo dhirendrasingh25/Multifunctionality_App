@@ -32,7 +32,6 @@ const quizSchema = new Schema(
     quizName: {
       type: String,
       required: true,
-      // unique: true,
     },
     userId: {
       type: Schema.Types.ObjectId,
